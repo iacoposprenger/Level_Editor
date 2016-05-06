@@ -15,7 +15,7 @@ public class Frame extends JFrame implements ActionListener {
 	public int selectx[] = new int[50];
 	public int selecty[] = new int[50];
 	private boolean autoDS = true;
-	private int t=0;
+	public int t=0;
 	
 	
 	public Frame() {
@@ -97,6 +97,7 @@ public class Frame extends JFrame implements ActionListener {
 		apropos.addActionListener(this);
 		annuler.addActionListener(this);
 		retablir.addActionListener(this);
+		nouveau.addActionListener(this);
 		
 	}
 	public void actionPerformed (ActionEvent ev)
@@ -250,6 +251,18 @@ public class Frame extends JFrame implements ActionListener {
 						pos[i][j].setBackground(Color.green);
 					if (file.getMemory(i, j, t) == 'p')
 						pos[i][j].setBackground(Color.blue);
+				}
+			}
+		}
+		if (ev.getSource() == nouveau){
+			int rep;
+			rep = JOptionPane.showConfirmDialog(null, "Êtes vous sur de vouloir créer un nouveau fichier et supprimer l'ancien ?", "Nouveau ?", JOptionPane.YES_NO_OPTION);
+			if (rep == 0){ 
+				for (int i=0; i<50; i++){
+					for(int j=0; j<50; j++){
+						pos[i][j].setBackground(Color.white);
+						t=0;
+					}	
 				}
 			}
 		}
