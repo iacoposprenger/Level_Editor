@@ -10,13 +10,16 @@ public class Frame extends JFrame implements ActionListener {
 	private JButton ennemi, vide, personnage, fin, block, pos[][];
 	private JMenuBar barreMenu;
 	private JMenu fichier, edition, affichage;
-	private JMenuItem nouveau, ouvrir, enregistrer, enregistrer_sous, quitter, annuler, retablir, deselectionner, selectionner,  masquer_barreOutil  ;
+	private JMenuItem apropos, nouveau, ouvrir, enregistrer, enregistrer_sous, quitter, annuler, retablir, autodeselection, deselectionner, selectionner,  masquer_barreOutil  ;
 	private JPanel panneau; 
 	public int selectx[] = new int[50];
 	public int selecty[] = new int[50];
+	private boolean autoDS = true;
+	private int t=0;
+	
 	
 	public Frame() {
-		this.setSize(1000, 800);
+		this.setSize(1000, 950);
 		this.setVisible(true);
 		this.setTitle("Level Editor");
 		Container contenu = getContentPane();
@@ -30,10 +33,11 @@ public class Frame extends JFrame implements ActionListener {
 		edition = new JMenu("Edition");
 		affichage = new JMenu("Affichage");
 		block = new JButton("Block");
-		ennemi = new JButton("Enemi");
+		ennemi = new JButton("Ennemi");
 		vide = new JButton("Vide");
 		personnage = new JButton("Personnage");
 		fin = new JButton("Fin");
+		apropos = new JMenuItem("À Propos");
 		nouveau = new JMenuItem("Nouveau");
 		ouvrir = new JMenuItem("Ouvrir");
 		enregistrer = new JMenuItem("Enregistrer");
@@ -41,6 +45,7 @@ public class Frame extends JFrame implements ActionListener {
 		quitter = new JMenuItem("Quitter");
 		annuler = new JMenuItem("Annuler");
 		retablir = new JMenuItem("Rétablir");
+		autodeselection = new JMenuItem("Activer/Désactiver l'Autodéselection");
 		deselectionner = new JMenuItem("Tout Déselectionner");
 		selectionner = new JMenuItem("Tout Selectionner");
 		masquer_barreOutil = new JMenuItem("Afficher/Masquer la barre d'outils");
@@ -66,6 +71,7 @@ public class Frame extends JFrame implements ActionListener {
 		barreMenu.add(fichier);
 		barreMenu.add(edition);
 		barreMenu.add(affichage);
+		fichier.add(apropos);
 		fichier.add(nouveau);
 		fichier.add(ouvrir);
 		fichier.add(enregistrer);
@@ -76,6 +82,7 @@ public class Frame extends JFrame implements ActionListener {
 		edition.add(selectionner);
 		edition.add(deselectionner);
 		affichage.add(masquer_barreOutil);
+		edition.add(autodeselection);
 		//ecouteurs
 		block.addActionListener(this);
 		ennemi.addActionListener(this);
@@ -86,10 +93,15 @@ public class Frame extends JFrame implements ActionListener {
 		fin.addActionListener(this);
 		selectionner.addActionListener(this);
 		deselectionner.addActionListener(this);
+		autodeselection.addActionListener(this);
+		apropos.addActionListener(this);
+		annuler.addActionListener(this);
+		retablir.addActionListener(this);
 		
 	}
 	public void actionPerformed (ActionEvent ev)
 	{
+		File file = new File();
 		// actions
 		if (ev.getSource() == quitter) {
 			int rep;
@@ -100,17 +112,13 @@ public class Frame extends JFrame implements ActionListener {
 				barreOutil.setVisible(false);
 			else 
 				barreOutil.setVisible(true);
-			for (int i=0; i<50; i++){
-				for(int j=0; j<50; j++){
-					if (ev.getSource() == pos[i][j]){
-						System.out.print(i);
-						System.out.print("       ");
-						System.out.println(j);
-						
-						if (pos[i][j].isBorderPainted() == false)
-							pos[i][j].setBorderPainted(true);
-						else
-							pos[i][j].setBorderPainted(false);
+		for (int i=0; i<50; i++){
+			for(int j=0; j<50; j++){
+				if (ev.getSource() == pos[i][j]){	
+					if (pos[i][j].isBorderPainted() == false)
+						pos[i][j].setBorderPainted(true);
+					else
+						pos[i][j].setBorderPainted(false);
 							
 					}	
 				}
@@ -120,7 +128,8 @@ public class Frame extends JFrame implements ActionListener {
 				for(int j=0; j<50; j++){
 					if (pos[i][j].isBorderPainted() == true){
 						pos[i][j].setBackground(Color.white);
-						pos[i][j].setBorderPainted(false);
+						if (autoDS == true)
+							pos[i][j].setBorderPainted(false);
 					}
 				}
 			}
@@ -130,7 +139,8 @@ public class Frame extends JFrame implements ActionListener {
 				for(int j=0; j<50; j++){
 					if (pos[i][j].isBorderPainted() == true){
 						pos[i][j].setBackground(Color.darkGray);
-						pos[i][j].setBorderPainted(false);
+						if (autoDS == true)
+							pos[i][j].setBorderPainted(false);
 					}
 				}
 			}
@@ -140,7 +150,8 @@ public class Frame extends JFrame implements ActionListener {
 				for(int j=0; j<50; j++){
 					if (pos[i][j].isBorderPainted() == true){
 						pos[i][j].setBackground(Color.red);
-						pos[i][j].setBorderPainted(false);
+						if (autoDS == true)
+							pos[i][j].setBorderPainted(false);
 					}
 				}
 			}
@@ -150,7 +161,8 @@ public class Frame extends JFrame implements ActionListener {
 				for(int j=0; j<50; j++){
 					if (pos[i][j].isBorderPainted() == true){
 						pos[i][j].setBackground(Color.blue);
-						pos[i][j].setBorderPainted(false);
+						if (autoDS == true)
+							pos[i][j].setBorderPainted(false);
 					}
 				}
 			}
@@ -160,7 +172,8 @@ public class Frame extends JFrame implements ActionListener {
 				for(int j=0; j<50; j++){
 					if (pos[i][j].isBorderPainted() == true){
 						pos[i][j].setBackground(Color.green);
-						pos[i][j].setBorderPainted(false);
+						if (autoDS == true)
+							pos[i][j].setBorderPainted(false);
 					}
 				}
 			}
@@ -176,6 +189,67 @@ public class Frame extends JFrame implements ActionListener {
 			for (int i=0; i<50; i++){
 				for(int j=0; j<50; j++){
 					pos[i][j].setBorderPainted(false);
+				}
+			}
+		}
+		if (ev.getSource() == autodeselection){
+			if (autoDS == false)
+				autoDS = true;
+			else
+				autoDS = false;
+		}
+		if (ev.getSource() == apropos){
+			JOptionPane.showMessageDialog(fichier, "Level Editor par Iacopo Sprenger");
+		}
+		if ((ev.getSource() == block)||(ev.getSource() == ennemi)||(ev.getSource() == vide)||(ev.getSource() == personnage)||(ev.getSource() == fin)){
+			t++;
+			for (int i=0; i<50; i++){
+				for(int j=0; j<50; j++){
+					if (pos[i][j].getBackground().equals(Color.white) )
+						file.setMemory(i, j, t, ' ');
+					if (pos[i][j].getBackground().equals(Color.darkGray))
+						file.setMemory(i, j, t, '0');
+					if (pos[i][j].getBackground().equals(Color.red))
+						file.setMemory(i, j, t, 'e');
+					if (pos[i][j].getBackground().equals(Color.green))
+						file.setMemory(i, j, t, 'm');
+					if (pos[i][j].getBackground().equals(Color.blue))
+						file.setMemory(i, j, t, 'p');
+				}
+			}
+		}
+		if (ev.getSource() == annuler){
+			t--;
+			for (int i=0; i<50; i++){
+				for(int j=0; j<50; j++){
+					if (file.getMemory(i, j, t) == ' ')
+						pos[i][j].setBackground(Color.white);
+					if (file.getMemory(i, j, t) == '0')
+						pos[i][j].setBackground(Color.darkGray);
+					if (file.getMemory(i, j, t) == 'e')
+						pos[i][j].setBackground(Color.red);
+					if (file.getMemory(i, j, t) == 'm')
+						pos[i][j].setBackground(Color.green);
+					if (file.getMemory(i, j, t) == 'p')
+						pos[i][j].setBackground(Color.blue);
+			
+				}
+			}
+		}
+		if (ev.getSource() == retablir){
+			t++;
+			for (int i=0; i<50; i++){
+				for(int j=0; j<50; j++){
+					if (file.getMemory(i, j, t) == ' ')
+						pos[i][j].setBackground(Color.white);
+					if (file.getMemory(i, j, t) == '0')
+						pos[i][j].setBackground(Color.darkGray);
+					if (file.getMemory(i, j, t) == 'e')
+						pos[i][j].setBackground(Color.red);
+					if (file.getMemory(i, j, t) == 'm')
+						pos[i][j].setBackground(Color.green);
+					if (file.getMemory(i, j, t) == 'p')
+						pos[i][j].setBackground(Color.blue);
 				}
 			}
 		}
